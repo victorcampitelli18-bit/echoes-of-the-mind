@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Echoes Of The Mind: The Captain</title>
+<style>
+body { margin:0; background:black; color:white; font-family:monospace; overflow:hidden; }
+#screen { position:absolute; width:100vw; height:100vh; display:flex; justify-content:center; align-items:center; text-align:center; padding:20px; }
+.glitch { animation: glitch 0.2s infinite; }
+@keyframes glitch { 0%{opacity:1;}50%{opacity:0.7;}100%{opacity:1;} }
+button { padding:10px 20px; background:black; border:1px solid white; color:white; }
+</style>
+</head>
+<body>
+<div id="screen"></div><script>
+const screen = document.getElementById('screen');
+
+function showTextSequence(texts, callback){
+  let i = 0;
+  function next(){
+    if(i >= texts.length){ setTimeout(callback,1000); return; }
+    screen.innerHTML = `<div class='glitch'>${texts[i]}</div>`;
+    i++;
+    setTimeout(next, 2500);
+  }
+  next();
+}
+
+// REMOVIDO BUG DE IMAGEM ALEATÓRIA
+function showImageThenTitle(){
+  screen.innerHTML = "<div class='glitch'>[CARREGANDO MEMÓRIA...]</div>";
+  setTimeout(()=>{
+    screen.innerHTML = "";
+    setTimeout(showTitle, 1000);
+  },2000);
+}
+
+function showTitle(){
+  screen.innerHTML = `
+  <div>
+    <h1 class='glitch'>Echoes Of The Mind</h1>
+    <h2>The Captain</h2>
+    <button onclick='startGame()'>Iniciar</button>
+  </div>`;
+}
+
+// GAMEPLAY COMPLETO AGORA
+function startGame(){
+  gameplaySequence();
+}
+
+function gameplaySequence(){
+  let scenes = [
+    "Você está na biblioteca...",
+    "O silêncio é absoluto...",
+    "Algo está te observando...",
+    "[CAPTAIN] Você não deveria estar aqui.",
+    "[CAPTAIN] Você escolheu lembrar.",
+    "[CAPTAIN] Agora não pode voltar.",
+    "Você ouve passos entre as estantes...",
+    "Algo se move rapidamente...",
+    "[???] ...",
+    "Você não está sozinho.",
+    "[CAPTAIN] Olhe para trás.",
+    "...",
+    "Nada está lá.",
+    "[CAPTAIN] Ainda não.",
+    "Continua..."
+  ];
+
+  let i = 0;
+
+  function nextScene(){
+    if(i >= scenes.length) return;
+
+    screen.innerHTML = `<div class='glitch'>${scenes[i]}</div>`;
+
+    // efeito de "susto" leve
+    if(Math.random() < 0.2){
+      document.body.style.background = "white";
+      setTimeout(()=> document.body.style.background = "black", 100);
+    }
+
+    i++;
+    setTimeout(nextScene, 2500);
+  }
+
+  nextScene();
+}
+
+// INÍCIO
+showTextSequence([
+  "Você não deveria estar aqui...",
+  "Você escolheu lembrar...",
+  "Agora enfrente as consequências..."
+], showImageThenTitle);
+</script></body>
+</html>
